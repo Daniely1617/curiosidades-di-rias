@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favoritos</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Favoritos</h1>
+        <nav class="nav">
+            <a href="/" class="active">Home</a>
+            <a href="#">Curiosidades</a>
+            <a href="#">Contato</a>
+            <a href="#">Sobre</a>
+        </nav>
+    </header>
+    <main>
+        <h1>Favoritos</h1>
+        <div id="favoritosContainer"></div>
+    </main>
+
+    <script>
+        const favoritosContainer = document.getElementById('favoritosContainer');
+        let favoritos = JSON.parse(localStorage.getItem('favoritos')) || [];
+
+        if (favoritos.length === 0) {
+            favoritosContainer.innerHTML = '<p>Nenhuma curiosidade favorita ainda.</p>';
+        } else {
+            favoritos.forEach(favorito => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <h3>${favorito}</h3>
+                    <button onclick="desfavoritar('${favorito}')">Desfavoritar</button>
+                `;
+                favoritosContainer.appendChild(card);
+            });
+        }
+
+        function desfavoritar(texto) {
+            favoritos = favoritos.filter(fav => fav !== texto);
+            localStorage.setItem('favoritos', JSON.stringify(favoritos));
+            // Atualiza a lista
+            window.location.reload(); // Recarrega a página para mostrar as mudanças
+        }
+    </script>
+</body>
+</html>
